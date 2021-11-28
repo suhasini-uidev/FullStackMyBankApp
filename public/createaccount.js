@@ -1,12 +1,12 @@
 // import Card from "./card";
 
 function CreateAccount() {
+  const [data, setData] = React.useState('');
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const ctx = React.useContext(UserContext);
 
   function validate(field, label) {
     if (!field) {
@@ -40,9 +40,16 @@ function CreateAccount() {
       var res = await fetch(url);
       var data = await res.json();
       console.log(data);
+      //hack to make .map work in alldata.js
+      fetch('/account/all')
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          setData(JSON.stringify(data));
+          users=data;                
+      });
+      setShow(false);
     })();
-
-    setShow(false);
   }
 
   function clearForm() {

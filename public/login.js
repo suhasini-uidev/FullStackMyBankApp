@@ -1,41 +1,46 @@
 // import Card from "./card";
 
-function Login() {
+function Login(props) {
   const [status, setStatus] = React.useState("");
   const [show, setShow] = React.useState(true);
   const [username, setUsername] = React.useState("");
   const [userPassword, setUserPassword] = React.useState("");
-  const ctx = React.useContext(UserContext);
 
-  const handleInput = (event) => {
-    for (let i = 0; i < ctx.users.length; i++) {
-      if (
-        username === ctx.users[i].email &&
-        userPassword === ctx.users[i].password
-      ) {
-        setShow(false);
-      } else {
-        setStatus(
-          "Either your username or password are incorrect. Think carefully and give it another try."
-        );
-        setTimeout(() => setStatus(""), 3000);
-      }
-    }
-  };
+  function handleInput() {
+    fetch(`/account/login/${username}/${userPassword}`)
+    .then(response => response.text())
+    .then(text => {
+        try {
+            const data = JSON.parse(text);
+            setStatus('');
+            setShow(false);
+            console.log('JSON:', data);
+            user = username;
+            acBalance=data.balance;
+            userBool = false;
+        } catch(err) {
+            setStatus(text+"Username or password are incorrect. Give it another try.")
+            console.log('err:', text);
+        }
+    });
+  }
 
   function clearForm() {
     setUsername("");
     setUserPassword("");
     setStatus("");
     setShow(true);
+    user = "";
+    userBool = true;
+    props.history.push("/Login");
   }
 
   return (
     <Card
-      bgcolor="secondary"
+      bgcolor="primary mx-auto"
       header="LOGIN"
       body={
-        show ? (
+       (show & userBool )? (
           <>
             <div>
               User Name (Email)
@@ -50,7 +55,7 @@ function Login() {
               <br />
               Password
               <br />
-              <input
+              <input type="password"
                 className="form-control"
                 value={userPassword}
                 name="userPassword"
@@ -64,7 +69,7 @@ function Login() {
                 className="btn btn-light  mx-auto d-block"
                 onClick={handleInput}
               >
-                Log In{" "}
+                Log In
               </button>
               <br />
               <p>{status}</p>
@@ -72,7 +77,7 @@ function Login() {
           </>
         ) : (
           <>
-            <h5>Login Success</h5>
+            <h5>Logged In</h5>
             <button
               type="submit"
               className="btn btn-light  mx-auto d-block"

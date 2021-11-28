@@ -1,5 +1,7 @@
 
 function NavBar(){
+  const mystyle = { textAlign:"center",color:"blue",fontSize:"20px"}
+  const mybrand = { textAlign:"center",color:"white",fontSize:"20px"}
   return(
     // <>
     // <nav className="navbar navbar-expand-lg navbar-light bg-dark justify-content-center">
@@ -43,7 +45,7 @@ function NavBar(){
     // </>
    <>
     <nav className="navbar navbar-expand-lg navbar-light bg-dark justify-content-center">
-      <a className="navbar-brand" id="bank" href=" ">SecureBank</a>
+      <a className="navbar-brand" style={mybrand}id="bank"  href=" ">SecureBank</a>
       <br/>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -54,7 +56,7 @@ function NavBar(){
             <a className="btn btn-outline-primary"   href="#/CreateAccount/" >Create Account</a>
           </li>
           <br/>
-          <li className="nav-item">
+          <li className="nav-item" style={mystyle}>
             <a className="btn btn-outline-info"  href="#/login/">Login</a>
             </li>
             <br/>
@@ -64,6 +66,10 @@ function NavBar(){
           <br/>
           <li className="nav-item">
             <a className="btn btn-outline-info"  href="#/withdraw/">Withdraw</a>
+          </li>
+          <br/>
+          <li className="nav-item">
+            <a className="btn btn-outline-info"  href="#/balance/">Balance</a>
           </li>
           <li className="nav-item">
             <a className="btn btn-outline-danger"  href="#/alldata/">AllData</a>

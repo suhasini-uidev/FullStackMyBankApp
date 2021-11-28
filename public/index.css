@@ -11,5 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar-light .navbar-brand {
+  color: rgba(190, 17, 17, 0.9);
+}
 /*@import 'bootstrap/dist/css/bootstrap.min.css';*/
 

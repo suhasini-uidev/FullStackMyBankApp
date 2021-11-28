@@ -12,7 +12,6 @@ MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
 
 // create user account
 function create(name, email, password){
-    console.log("create was called");
     return new Promise((resolve, reject) => {    
         const collection = db.collection('users');
         const doc = {name, email, password, balance: 0};

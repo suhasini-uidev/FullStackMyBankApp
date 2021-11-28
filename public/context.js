@@ -2,6 +2,10 @@ const Route       = ReactRouterDOM.Route;
 const Link        = ReactRouterDOM.Link;
 const HashRouter  = ReactRouterDOM.HashRouter;
 const UserContext = React.createContext(null);
+const user = "";
+const acBalance = 0;
+const users = "";
+const userBool = true;
 
 function Card(props){
   function classes(){
@@ -22,5 +26,4 @@ function Card(props){
     </div>      
   );    
 }
-
 

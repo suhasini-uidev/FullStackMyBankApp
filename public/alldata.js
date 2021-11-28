@@ -2,6 +2,7 @@
 
 function AllData() {
   const [data, setData] = React.useState('');
+
   React.useEffect(() => {
     //fetch all accounts from API
     fetch(`/account/all`)
@@ -9,37 +10,37 @@ function AllData() {
       .then(data => {
         console.log(data);
         setData(JSON.stringify(data));
+        users = data;
       });
   }, []);
   
   return (
 
     <Card
-      bgcolor="danger mx-auto"
+      bgcolor="info mx-auto"
       header="ALL DATA"
       body={
         <>
           <p> Bank user data :</p>
-              <div className="table">
-              <table className="table">
-                     <thead>
-                       <tr>
-                     <th>Name</th>
-                     <th>Email</th>
-                     <th>Password</th>
-                         </tr>
-                       </thead>
+          <div className="table-responsive">
+            <table className="card-table table">
+              <thead className="table-info">
+                  <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  </tr>
+              </thead>
               <tbody>
-              {data}
-              {/* var parsedJSON = JSON.parse(data);
-              for (int i=0;i<parsedJSON.length;i++){
-                <tr key={parsedJSON.[i].password}>
-                      <td>{parsedJSON.[i].name}</td>
-                      <td>{parsedJSON.[i].email}</td>
-                      <td>{parsedJSON.[i].password}</td>
-              } */}
+                { users.map((user) => {
+                    return (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                      </tr>
+                    );}
+                  )}
               </tbody>
-            </table>
+          </table>
           </div>
         </>
       }

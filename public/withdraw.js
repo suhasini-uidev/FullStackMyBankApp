@@ -1,25 +1,33 @@
 // import Card from "./card";
 
-function Withdraw(props) {
+function Withdraw() {
   const [show, setShow] = React.useState(true);
-  const [withdraw, setWithdraw] = React.useState("");
   const [status, setStatus] = React.useState("");
-  const ctx = React.useContext(UserContext);
+  const [withdraw, setWithdraw] = React.useState("");
 
-  function validateWithdraw(withdraw) {
+  function validateUser(user){
+    if (user === ""){
+      setStatus("You are not authorized. please login");
+      setTimeout(() => setStatus(""), 3000);
+      return false;
+    }
+    return true;
+  }
+
+  function validateWithdraw(withdraw){
     if (withdraw < 0) {
       setStatus(
         " Greater than zero"
       );
       setTimeout(() => setStatus(""), 3000);
       return false;
-    } else if (ctx.users[0].balance - withdraw < 0) {
+    } else if (acBalance - withdraw < 0) {
       setStatus(
         "Amount equal to your balance"
       );
       setTimeout(() => setStatus(""), 3000);
       return false;
-    } else if (ctx.users[0].balance - withdraw >= 0) {
+    } else if (acBalance - withdraw >= 0) {
       return true;
     } else
       setStatus(
@@ -28,11 +36,25 @@ function Withdraw(props) {
     setTimeout(() => setStatus(""), 3000);
     return false;
   }
+  
 
   function handleWithdraw() {
+    if (!validateUser(user, "user")) return;
     if (!validateWithdraw(withdraw, "withdraw")) return;
-    ctx.users[0].balance = Number(ctx.users[0].balance) - Number(withdraw);
-    setShow(false);
+    fetch(`/account/update/${user}/-${withdraw}`)
+    .then(response => response.text())
+    .then(text => {
+        try {
+            const data = JSON.parse(text);
+            acBalance=data.value.balance;
+            // setStatus(JSON.stringify(data.value));
+            setShow(false);
+            console.log('JSON:', data);
+        } catch(err) {
+            setStatus('Withdrawal failed')
+            console.log('err:', text);
+        }
+    });
   }
 
   function clearForm() {
@@ -42,14 +64,15 @@ function Withdraw(props) {
 
   return (
     <Card
-      bgcolor="info mx-auto"
+      bgcolor="warning mx-auto"
       header="WITHDRAW"
       status={status}
       body={
         show ? (
-          <>
-            Balance: {ctx.users[0].balance}
+            <>
+            User Name (Email): {user}
             <br />
+            Current Balance: ${acBalance}
             <br />
             Withdraw Amount
             <br />
@@ -59,7 +82,7 @@ function Withdraw(props) {
               id="withdraw"
               placeholder="Withdraw Amount"
               value={withdraw}
-              onChange={(e) => setWithdraw(e.currentTarget.value)}
+              onChange={(e) => {setWithdraw(e.currentTarget.value);}}
             />
             <br />
             <button
@@ -67,16 +90,14 @@ function Withdraw(props) {
               className="btn btn-light  mx-auto d-block"
               disabled={withdraw === "" ? true : false}
               onClick={handleWithdraw}
-            >
-              Withdraw
+            >Withdraw
             </button>
             <br />
           </>
         ) : (
           <>
             <h5>Withdraw Success</h5>
-            New Balance: {ctx.users[0].balance}
-            <br />
+            New Balance: ${acBalance}
             <br />
             <button
               type="submit"
